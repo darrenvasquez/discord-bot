@@ -10,7 +10,7 @@ enabled = True
 ### Events
 
 @cmdtest.command()
-async def test(ctx, arg):
+async def test(ctx, arg: str=None):
     await ctx.send("hello!")
     pass
 
@@ -41,6 +41,29 @@ async def exit(ctx):
     else:
         await ctx.author.send("You do not have permission to shut down this bot. Please contact @Darren#0268 for help.")
 
+@cmdtest.command()
+async def leaderboard(ctx, arg: str=None, amt: str=None):
+    if arg:
+        if arg == "day":
+            wow = 1
+            temp = "```Daily Message Leaderboard:\n"
+            for row in cr.execute(''' SELECT tag, msgCount as 'amt' FROM users WHERE day=date('now') GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(5 if amt == None else amt)):
+                temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
+                wow+=1
+            temp += "```"
+            await ctx.channel.send(temp)
+        elif arg == "total":
+            wow = 1
+            temp = "```Cumulative Message Leaderboard:\n"
+            for row in cr.execute(''' SELECT tag, SUM(msgCount) as 'amt' FROM users GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(5 if amt == None else amt)):
+                temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
+                wow+=1
+            temp += "```"
+            await ctx.channel.send(temp)
+        else:
+            await ctx.channel.send("```Usage: ;leaderboard (day|total) [limit]```")
+    else:
+        await ctx.channel.send("```Usage: ;leaderboard (day|total) [limit]```")
 
 @cmdtest.event
 async def on_ready():
