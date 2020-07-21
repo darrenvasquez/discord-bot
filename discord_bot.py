@@ -46,20 +46,26 @@ async def leaderboard(ctx, arg: str=None, amt: str=None):
     if arg:
         if arg == "day":
             wow = 1
-            temp = "```Daily Message Leaderboard:\n"
-            for row in cr.execute(''' SELECT tag, msgCount as 'amt' FROM users WHERE day=date('now') GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(5 if amt == None else amt)):
-                temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
+            embedMsg = discord.Embed(title="Daily Message Leaderboard", description="Total messages sent in this server today", color=0x32a895)
+            #temp = "```Daily Message Leaderboard:\n"
+            for row in cr.execute(''' SELECT tag, msgCount as 'amt' FROM users WHERE day=date('now') GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(6 if amt == None else amt)):
+                #temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
+                embedMsg.add_field(name=(str(wow) + ". " + str(row[0])), value=(str(row[1]) + " messages"), inline=True)
                 wow+=1
-            temp += "```"
-            await ctx.channel.send(temp)
+            #temp += "```"
+            #await ctx.channel.send(temp)
+            await ctx.channel.send(embed=embedMsg)
         elif arg == "total":
             wow = 1
-            temp = "```Cumulative Message Leaderboard:\n"
-            for row in cr.execute(''' SELECT tag, SUM(msgCount) as 'amt' FROM users GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(5 if amt == None else amt)):
-                temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
+            embedMsg = discord.Embed(title="Cumulative Message Leaderboard", description="Total messages sent in this server", color=0x32a895)
+            #temp = "```Cumulative Message Leaderboard:\n"
+            for row in cr.execute(''' SELECT tag, SUM(msgCount) as 'amt' FROM users GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(6 if amt == None else amt)):
+                #temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
+                embedMsg.add_field(name=(str(wow) + ". " + str(row[0])), value=(str(row[1]) + " messages"), inline=True)
                 wow+=1
-            temp += "```"
-            await ctx.channel.send(temp)
+            #temp += "```"
+            #await ctx.channel.send(temp)
+            await ctx.channel.send(embed=embedMsg)
         else:
             await ctx.channel.send("```Usage: ;leaderboard (day|total) [limit]```")
     else:
@@ -101,4 +107,16 @@ if cr.fetchone()[0] != 1:
     cr.execute(''' CREATE TABLE users (id text, tag text, day date, msgCount integer) ''')
     db.commit()
 
-cmdtest.run('<key here>')
+key = None
+
+# assume key file is already set up.
+
+with open("key", "r") as file:
+    key=file.read().replace('\n', '')
+
+if key:
+    cmdtest.run(key)
+else:
+    print("[SYSTEM] Key not found!")
+    db.close()
+    sys.exit("[SYSTEM] Exiting...")
