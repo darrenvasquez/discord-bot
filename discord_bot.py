@@ -71,6 +71,15 @@ async def leaderboard(ctx, arg: str=None, amt: str=None):
     else:
         await ctx.channel.send("```Usage: ;leaderboard (day|total) [limit]```")
 
+@cmdtest.command()
+async def dump(ctx):
+    if ctx.author.id == 94951931172098048:
+        await ctx.channel.send("Dumping DB file to {0}...".format(ctx.author.mention))
+        with open('data.db', 'rb') as fp:
+            await ctx.author.send(file=discord.File(fp))
+    else:
+        await ctx.channel.send("You do not have permission to execute this command!")
+
 @cmdtest.event
 async def on_ready():
     print('[SYSTEM] Logged in as {0.user}'.format(cmdtest))
