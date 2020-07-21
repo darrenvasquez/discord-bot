@@ -74,7 +74,7 @@ async def leaderboard(ctx, arg: str=None, amt: str=None):
 @cmdtest.event
 async def on_ready():
     print('[SYSTEM] Logged in as {0.user}'.format(cmdtest))
-    await cmdtest.change_presence(activity=discord.Activity(name='with ur mom', type=discord.ActivityType.playing))
+    await cmdtest.change_presence(activity=discord.Activity(name='Minecraft', type=discord.ActivityType.playing))
 
 @cmdtest.event
 async def on_message(message):
@@ -100,7 +100,7 @@ async def on_message(message):
 
 ### Setup
 
-db = sqlite3.connect('test.db')
+db = sqlite3.connect('data.db')
 cr = db.cursor()
 cr.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='users' ''')
 if cr.fetchone()[0] != 1:
