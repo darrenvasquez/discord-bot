@@ -7,11 +7,13 @@ cmdtest = commands.Bot(command_prefix=';')
 
 enabled = True
 
+admins = [94951931172098048, 94954503819759616]
+
 ### Events
 
 @cmdtest.command()
-async def test(ctx, arg: str=None):
-    await ctx.send("hello!")
+async def setup(ctx, arg: str=None):
+    await ctx.send("hello! this is a temporary command")
     pass
 
 @cmdtest.command()
@@ -34,7 +36,7 @@ async def count(ctx, user: discord.User=None):
 
 @cmdtest.command()
 async def exit(ctx):
-    if ctx.author.id == 94951931172098048:
+    if ctx.author.id in admins:
         await cmdtest.logout()
         db.close()
         sys.exit("[SYSTEM] Exiting...")
@@ -42,13 +44,13 @@ async def exit(ctx):
         await ctx.author.send("You do not have permission to shut down this bot. Please contact @Darren#0268 for help.")
 
 @cmdtest.command()
-async def leaderboard(ctx, arg: str=None, amt: str=None):
+async def leaderboard(ctx, arg: str=None, amt: str=6):
     if arg:
         if arg == "day":
             wow = 1
             embedMsg = discord.Embed(title="Daily Message Leaderboard", description="Total messages sent in this server today", color=0x32a895)
             #temp = "```Daily Message Leaderboard:\n"
-            for row in cr.execute(''' SELECT tag, msgCount as 'amt' FROM users WHERE day=date('now') GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(6 if amt == None else amt)):
+            for row in cr.execute(''' SELECT tag, msgCount as 'amt' FROM users WHERE day=date('now') GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(amt)):
                 #temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
                 embedMsg.add_field(name=(str(wow) + ". " + str(row[0])), value=(str(row[1]) + " messages"), inline=True)
                 wow+=1
@@ -59,7 +61,7 @@ async def leaderboard(ctx, arg: str=None, amt: str=None):
             wow = 1
             embedMsg = discord.Embed(title="Cumulative Message Leaderboard", description="Total messages sent in this server", color=0x32a895)
             #temp = "```Cumulative Message Leaderboard:\n"
-            for row in cr.execute(''' SELECT tag, SUM(msgCount) as 'amt' FROM users GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(6 if amt == None else amt)):
+            for row in cr.execute(''' SELECT tag, SUM(msgCount) as 'amt' FROM users GROUP BY id ORDER BY amt desc LIMIT {0} '''.format(amt)):
                 #temp += (str(wow) + ". " + str(row[0]) + " (" + str(row[1]) + " messages)") + "\n"
                 embedMsg.add_field(name=(str(wow) + ". " + str(row[0])), value=(str(row[1]) + " messages"), inline=True)
                 wow+=1
@@ -73,7 +75,7 @@ async def leaderboard(ctx, arg: str=None, amt: str=None):
 
 @cmdtest.command()
 async def dump(ctx):
-    if ctx.author.id == 94951931172098048:
+    if ctx.author.id in admins:
         await ctx.channel.send("Dumping DB file to {0}...".format(ctx.author.mention))
         with open('data.db', 'rb') as fp:
             await ctx.author.send(file=discord.File(fp))
