@@ -90,7 +90,7 @@ async def on_reaction_add(reaction, user):
         if isinstance(reaction.emoji, str) and reaction.emoji == "😂":
             print("joy reaction found")
             for react in reaction.message.reactions:
-                if (react.emoji is str) and (reaction.emoji == "😂"):
+                if (isinstance(reaction.emoji, str)) and (reaction.emoji == "😂"):
                     print("joy reaction users found")
                     react_users = await react.users().flatten()
                     count = 0
@@ -100,7 +100,7 @@ async def on_reaction_add(reaction, user):
                     if count > 1:
                         print("count reached")
                         for channel in reaction.message.guild.text_channels:
-                            if "starnboard" in channel.name:
+                            if "starboard" in channel.name:
                                 print("starboard channel found")
                                 await channel.send("post here")
                                 break
