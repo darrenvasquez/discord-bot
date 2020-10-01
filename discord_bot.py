@@ -82,7 +82,7 @@ async def dump(ctx):
     else:
         await ctx.channel.send("You do not have permission to execute this command!")
 
-@cmdtest.end
+@cmdtest.event
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
         await reaction.message.channel.send("reaction added - this is a test")
