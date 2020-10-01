@@ -87,30 +87,29 @@ async def dump(ctx):
 @cmdtest.event
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
-        #await reaction.message.channel.send("emoji name: " + reaction.emoji.name + "\nemoji id: " + reaction.emoji.id)
-        print(reaction.emoji)
         if isinstance(reaction.emoji, str) and reaction.emoji == "😂":
-            print("joy reaction found")
             for react in reaction.message.reactions:
                 if (isinstance(reaction.emoji, str)) and (reaction.emoji == "😂"):
-                    print("joy reaction users found")
                     react_users = await react.users().flatten()
                     count = 0
                     for react_user in react_users:
                         if not react_user.id == user.id:
                             count += 1
                     if count > 0:
-                        print("count reached")
                         if not reaction.message.id in starboard_posts:
                             for channel in reaction.message.guild.text_channels:
                                 if "starboard" in channel.name:
-                                    print("starboard channel found")
+
                                     ### Message Contents Created Here
-                                    embedMsg = discord.Embed(title="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.created_at, description=reaction.message.content, color=0x32a895)
-                                    embedMsg.set_thumbnail(reaction.message.author.avatar_url)
-                                    embedMsg.set_author(name="temp", url=discord.Embed.Empty, icon_url=reaction.message.author.avatar_url)
+                                    #embedMsg = discord.Embed(title="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.created_at, description=reaction.message.content, color=0x32a895)
+                                    #embedMsg.set_thumbnail(url=reaction.message.author.avatar_url)
+                                    #embedMsg.set_author(name="temp", url=discord.Embed.Empty, icon_url=reaction.message.author.avatar_url)
+                                    embed=discord.Embed()
+                                    embed.set_author(name="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), url=discord.Embed.Empty, icon_url=eaction.message.author.avatar_url)
+                                    embed.set_footer(text="click username to jump to message")
                                     #embedMsg.add_field(name="", value="value")
-                                    await channel.send(embed=embedMsg)
+
+                                    await channel.send(embed=embed)
                                     starboard_posts.append(reaction.message.id)
                                     break
                     break
