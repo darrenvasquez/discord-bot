@@ -86,6 +86,8 @@ async def dump(ctx):
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
         #await reaction.message.channel.send("emoji name: " + reaction.emoji.name + "\nemoji id: " + reaction.emoji.id)
+        if reaction.emoji is str:
+            print(reaction.emoji)
         if reaction.emoji is str and reaction.emoji == "joy":
             print("joy reaction found")
             for react in rection.message.reactions:
