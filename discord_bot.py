@@ -89,7 +89,7 @@ async def on_reaction_add(reaction, user):
         print(reaction.emoji)
         if isinstance(reaction.emoji, str) and reaction.emoji == "😂":
             print("joy reaction found")
-            for react in rection.message.reactions:
+            for react in reaction.message.reactions:
                 if (react.emoji is str) and (reaction.emoji == "😂"):
                     print("joy reaction users found")
                     react_users = await react.users().flatten()
