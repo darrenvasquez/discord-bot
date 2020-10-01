@@ -108,7 +108,7 @@ async def on_reaction_add(reaction, user):
                                     ### Message Contents Created Here
                                     embedMsg = discord.Embed(title="Starboard Message by {0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.author.created_at, url=reaction.message.jump_url, color=0x32a895)
                                     embedMsg.add_field(name="title", value="value")
-                                    await channel.send("post here")
+                                    await channel.send(embed=embedMsg)
                                     starboard_posts.append(reaction.message.id)
                                     break
                     break
