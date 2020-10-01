@@ -85,7 +85,9 @@ async def dump(ctx):
 @cmdtest.event
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
-        await reaction.message.channel.send("reaction added - this is a test")
+        await reaction.message.channel.send("emoji name: " + reaction.emoji.name + "\nemoji id: " + reaciton.emoji.id)
+        #if reaction.message
+
 
 @cmdtest.event
 async def on_ready():
@@ -122,10 +124,10 @@ cr.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name
 if cr.fetchone()[0] != 1:
     cr.execute(''' CREATE TABLE users (id text, tag text, day date, msgCount integer) ''')
     db.commit()
-cr.execute(''' SELECT count(*) FROM sqlite_master WHERE type='table' AND name='starboard' ''')
-if cr.fetchone()[0] != 1:
-    cr.execute(''' CREATE TABLE starboard (orginal_id text, starboard_id text, lastUpdated datetime) ''')
-    db.commit()
+#cr.execute(''' SELECT count(*) FROM sqlite_master WHERE type='table' AND name='starboard' ''')
+#if cr.fetchone()[0] != 1:
+#    cr.execute(''' CREATE TABLE starboard (orginal_id text, starboard_id text, lastUpdated datetime) ''')
+#    db.commit()
 
 key = None
 
