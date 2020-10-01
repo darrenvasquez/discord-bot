@@ -106,7 +106,9 @@ async def on_reaction_add(reaction, user):
                                 if "starboard" in channel.name:
                                     print("starboard channel found")
                                     ### Message Contents Created Here
-                                    embedMsg = discord.Embed(title="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.created_at, thumbnail=reaction.message.author.avatar_url, description=reaction.message.content, color=0x32a895)
+                                    embedMsg = discord.Embed(title="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.created_at, description=reaction.message.content, color=0x32a895)
+                                    embedMsg.set_thumbnail(reaction.message.author.avatar_url)
+                                    embedMsg.set_author(name="temp", url=discord.Embed.Empty, icon_url=reaction.message.author.avatar_url)
                                     #embedMsg.add_field(name="", value="value")
                                     await channel.send(embed=embedMsg)
                                     starboard_posts.append(reaction.message.id)
