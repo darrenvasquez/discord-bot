@@ -87,10 +87,10 @@ async def on_reaction_add(reaction, user):
     if reaction.message.guild:
         #await reaction.message.channel.send("emoji name: " + reaction.emoji.name + "\nemoji id: " + reaction.emoji.id)
         print(reaction.emoji)
-        if isinstance(reaction.emoji, str) and reaction.emoji == "joy":
+        if isinstance(reaction.emoji, str) and reaction.emoji == "😂":
             print("joy reaction found")
             for react in rection.message.reactions:
-                if (react.emoji is str) and (reaction.emoji == "joy"):
+                if (react.emoji is str) and (reaction.emoji == "😂"):
                     print("joy reaction users found")
                     react_users = await react.users().flatten()
                     count = 0
