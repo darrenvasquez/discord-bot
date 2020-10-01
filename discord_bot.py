@@ -85,8 +85,21 @@ async def dump(ctx):
 @cmdtest.event
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
-        await reaction.message.channel.send("emoji name: " + reaction.emoji.name + "\nemoji id: " + reaciton.emoji.id)
-        #if reaction.message
+        #await reaction.message.channel.send("emoji name: " + reaction.emoji.name + "\nemoji id: " + reaction.emoji.id)
+        if reaction.emoji is str and reaction.emoji == "joy":
+            for react in rection.message.reactions:
+                if (react.emoji is str) and (reaction.emoji == "joy"):
+                    react_users = await react.users().flatten()
+                    count = 0
+                    for react_user in react_users:
+                        if not react_user.id == user.id:
+                            count += 1
+                    if count > 2:
+                        for channel in reaction.message.guild.text_channels:
+                            if "starboard" in channel.name:
+                                await channel.send("post here")
+                                break
+                    break
 
 
 @cmdtest.event
