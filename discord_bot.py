@@ -9,6 +9,8 @@ enabled = True
 
 admins = [94951931172098048, 94954503819759616]
 
+starboard_posts = []
+
 ### Events
 
 @cmdtest.command()
@@ -97,13 +99,18 @@ async def on_reaction_add(reaction, user):
                     for react_user in react_users:
                         if not react_user.id == user.id:
                             count += 1
-                    if count > 1:
+                    if count > 0:
                         print("count reached")
-                        for channel in reaction.message.guild.text_channels:
-                            if "starboard" in channel.name:
-                                print("starboard channel found")
-                                await channel.send("post here")
-                                break
+                        if not reaction.message.id in starboard_posts:
+                            for channel in reaction.message.guild.text_channels:
+                                if "starboard" in channel.name:
+                                    print("starboard channel found")
+                                    ### Message Contents Created Here
+                                    embedMsg = discord.Embed(title="Starboard Message by {0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.author.created_at, url=reaction.message.jump_url, color=0x32a895)
+                                    embedMsg.add_field(title="title", value="value")
+                                    await channel.send("post here")
+                                    starboard_posts.append(reaction.message.id)
+                                    break
                     break
 
 
