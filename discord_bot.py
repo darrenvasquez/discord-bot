@@ -105,7 +105,7 @@ async def on_reaction_add(reaction, user):
                                     #embedMsg.set_thumbnail(url=reaction.message.author.avatar_url)
                                     #embedMsg.set_author(name="temp", url=discord.Embed.Empty, icon_url=reaction.message.author.avatar_url)
                                     embed=discord.Embed()
-                                    embed.set_author(name="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), url=discord.Embed.Empty, icon_url=eaction.message.author.avatar_url)
+                                    embed.set_author(name="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), url=discord.Embed.Empty, icon_url=reaction.message.author.avatar_url)
                                     embed.set_footer(text="click username to jump to message")
                                     #embedMsg.add_field(name="", value="value")
 
