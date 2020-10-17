@@ -89,19 +89,27 @@ async def dump(ctx):
 @cmdtest.event
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
+        print("in guild")
+        ### TEST CODE
+        if isinstance(reaction.emoji, str):
+            print("emoji is: {0}, and the starboard_emojis list is {1}".format(reaction.emoji, starboard_emojis))
+        ### END TEST CODE
         if isinstance(reaction.emoji, str) and reaction.emoji in starboard_emojis:
+            print("emoji is a str, and in the starboard_emojis list")
             for react in reaction.message.reactions:
+                print("checking a reaction...")
                 if (isinstance(reaction.emoji, str)) and (reaction.emoji in starboard_emojis):
+                    print("reaction emoji is a str and is located in starboard_emojis list")
                     react_users = await react.users().flatten()
-                    count = 0
+                    count = 1 # temporary, go back to 0
                     for react_user in react_users:
                         if not react_user.id == user.id:
                             count += 1
-                    if count > 2:
+                    if count > 0: # temporary, go back to 2
                         if not reaction.message.id in starboard_posts:
                             for channel in reaction.message.guild.text_channels:
                                 if "starboard" in channel.name:
-
+                                    print("creating and posting message")
                                     ### Message Contents Created Here
                                     embed=discord.Embed(title=reaction.message.content)
                                     embed.set_author(name="{0}#{1} {2}".format(reaction.message.author.name, reaction.message.author.discriminator, reaction.emoji), url=reaction.message.jump_url, icon_url=reaction.message.author.avatar_url)
