@@ -108,7 +108,7 @@ async def on_reaction_add(reaction, user):
                                     embed.set_footer(text="click username to jump to message")
                                     #embedMsg.add_field(name="", value="value")
                                     if reaction.message.attachments:
-                                        embed.set_image(reaction.message.attachments[0].url)
+                                        embed.set_image(url=reaction.message.attachments[0].url)
                                     await channel.send(embed=embed)
                                     starboard_posts.append(reaction.message.id)
                                     break
