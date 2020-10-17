@@ -91,7 +91,7 @@ async def on_reaction_add(reaction, user):
     if reaction.message.guild:
         if isinstance(reaction.emoji, str) and reaction.emoji in starboard_emojis:
             for react in reaction.message.reactions:
-                if (isinstance(reaction.emoji, str)) and (reaction.emoji == starboard_emojis):
+                if (isinstance(reaction.emoji, str)) and (reaction.emoji in starboard_emojis):
                     react_users = await react.users().flatten()
                     count = 0
                     for react_user in react_users:
