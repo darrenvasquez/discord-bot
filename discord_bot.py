@@ -93,11 +93,11 @@ async def on_reaction_add(reaction, user):
             for react in reaction.message.reactions:
                 if (isinstance(reaction.emoji, str)) and (reaction.emoji in starboard_emojis):
                     react_users = await react.users().flatten()
-                    count = 1 # temporary, go back to 0
+                    count = 0 # temporary, go back to 0
                     for react_user in react_users:
                         if not react_user.id == user.id:
                             count += 1
-                    if count > 0: # temporary, go back to 2
+                    if count > 2: # temporary, go back to 2
                         if not reaction.message.id in starboard_posts:
                             for channel in reaction.message.guild.text_channels:
                                 if "starboard" in channel.name:
@@ -108,7 +108,7 @@ async def on_reaction_add(reaction, user):
                                     embed.set_footer(text="click username to jump to message")
                                     #embedMsg.add_field(name="", value="value")
                                     if reaction.message.attachments:
-                                        embed.set_image(url=reaction.message.attachments[0].url)
+                                        embed.set_image(url=reaction.message.attachments[0].proxy_url)
                                     await channel.send(embed=embed)
                                     starboard_posts.append(reaction.message.id)
                                     break
