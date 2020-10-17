@@ -125,6 +125,8 @@ async def on_ready():
 async def on_message(message):
     if message.author == cmdtest.user:
         return
+    if message.author.bot:
+        return
     if (not message.content.startswith(";")) and (not "bot" in message.channel.name):
         cr.execute(''' SELECT * FROM users where id='{0}' and day=date('now') '''.format(message.author.id))
         if cr.fetchone():
