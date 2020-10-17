@@ -11,6 +11,8 @@ admins = [94951931172098048, 94954503819759616]
 
 starboard_posts = []
 
+starboard_emojis = ["🌟", "😂", "⭐", "💫", "✨", "🌠"]
+
 ### Events
 
 @cmdtest.command()
@@ -87,29 +89,27 @@ async def dump(ctx):
 @cmdtest.event
 async def on_reaction_add(reaction, user):
     if reaction.message.guild:
-        if isinstance(reaction.emoji, str) and reaction.emoji == "😂":
+        if isinstance(reaction.emoji, str) and reaction.emoji in starboard_emojis:
             for react in reaction.message.reactions:
-                if (isinstance(reaction.emoji, str)) and (reaction.emoji == "😂"):
+                if (isinstance(reaction.emoji, str)) and (reaction.emoji == starboard_emojis):
                     react_users = await react.users().flatten()
                     count = 0
                     for react_user in react_users:
                         if not react_user.id == user.id:
                             count += 1
-                    if count > 0:
+                    if count > 2:
                         if not reaction.message.id in starboard_posts:
                             for channel in reaction.message.guild.text_channels:
                                 if "starboard" in channel.name:
 
                                     ### Message Contents Created Here
-                                    #embedMsg = discord.Embed(title="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), timestamp=reaction.message.created_at, description=reaction.message.content, color=0x32a895)
-                                    #embedMsg.set_thumbnail(url=reaction.message.author.avatar_url)
-                                    #embedMsg.set_author(name="temp", url=discord.Embed.Empty, icon_url=reaction.message.author.avatar_url)
                                     embed=discord.Embed(title=reaction.message.content)
-                                    embed.set_author(name="{0}#{1}".format(reaction.message.author.name, reaction.message.author.discriminator), url=reaction.message.jump_url, icon_url=reaction.message.author.avatar_url)
+                                    embed.set_author(name="{0}#{1} {2}".format(reaction.message.author.name, reaction.message.author.discriminator, reaction.emoji), url=reaction.message.jump_url, icon_url=reaction.message.author.avatar_url)
                                     #embed.add_field(value=reaction.message.content)
                                     embed.set_footer(text="click username to jump to message")
                                     #embedMsg.add_field(name="", value="value")
-
+                                    if reaction.message.attachments:
+                                        embed.set_image(reaction.attachments[0].url)
                                     await channel.send(embed=embed)
                                     starboard_posts.append(reaction.message.id)
                                     break
@@ -151,10 +151,10 @@ cr.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name
 if cr.fetchone()[0] != 1:
     cr.execute(''' CREATE TABLE users (id text, tag text, day date, msgCount integer) ''')
     db.commit()
-#cr.execute(''' SELECT count(*) FROM sqlite_master WHERE type='table' AND name='starboard' ''')
-#if cr.fetchone()[0] != 1:
-#    cr.execute(''' CREATE TABLE starboard (orginal_id text, starboard_id text, lastUpdated datetime) ''')
-#    db.commit()
+cr.execute(''' SELECT count(*) FROM sqlite_master WHERE type='table' AND name='starboard' ''')
+if cr.fetchone()[0] != 1:
+    cr.execute(''' CREATE TABLE starboard (orginal_id text, starboard_id text, lastUpdated datetime) ''')
+    db.commit()
 
 key = None
 
