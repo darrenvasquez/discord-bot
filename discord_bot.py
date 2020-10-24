@@ -50,6 +50,7 @@ async def exit(ctx):
 
 @cmdtest.command()
 async def toggletroll(ctx):
+    global enabled
     if ctx.author.id in admins:
         if enabled:
             enabled = False
