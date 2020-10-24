@@ -58,7 +58,6 @@ async def toggletroll(ctx):
         else:
             enabled = True
             await ctx.channel.send("enabled!")
-        await ctx.message.add_reaction("thumbsup")
 
 @cmdtest.command()
 async def leaderboard(ctx, arg: str=None, amt: str=6):
@@ -139,10 +138,16 @@ async def on_message(message):
         return
     if message.author.bot and message.embeds:
         print("[{0} - {1}:{2}] {3} || {4} || {5}".format(datetime.now(), message.author.name, message.author.discriminator, message.embeds[0].title, message.embeds[0].description, message.embeds[0].footer))
-        if enabled and message.embeds[0].description.contains("h!trick"):
+        if enabled and "h!trick" in message.embeds[0].description:
             await message.channel.send("h!trick")
-        elif enabled and message.embeds[0].description.contains("h!treat"):
+            emoji = discord.utils.get(message.guild.emojis, name='robDab')
+            if emoji:
+                await message.add_reaction(emoji)
+        elif enabled and "h!treat" in message.embeds[0].description:
             await message.channel.send("h!treat")
+            emoji = discord.utils.get(message.guild.emojis, name='robDab')
+            if emoji:
+                await message.add_reaction(emoji)
         return
     if (not message.content.startswith(";")) and (not "bot" in message.channel.name):
         cr.execute(''' SELECT * FROM users where id='{0}' and day=date('now') '''.format(message.author.id))
