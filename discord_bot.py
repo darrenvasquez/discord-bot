@@ -2,6 +2,7 @@ import discord
 import sys
 import sqlite3
 from discord.ext import commands
+from datetime import datetime
 
 cmdtest = commands.Bot(command_prefix=';')
 
@@ -124,7 +125,9 @@ async def on_ready():
 async def on_message(message):
     if message.author == cmdtest.user:
         return
-    if message.author.bot:
+    if message.author.bot and message.embeds:
+        print("[{0} - {1}:{2}] {3}".format(datetime.now(), message.author.name, message.author.discriminator, message.embeds[0]))
+
         return
     if (not message.content.startswith(";")) and (not "bot" in message.channel.name):
         cr.execute(''' SELECT * FROM users where id='{0}' and day=date('now') '''.format(message.author.id))
