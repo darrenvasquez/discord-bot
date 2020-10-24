@@ -6,7 +6,7 @@ from datetime import datetime
 
 cmdtest = commands.Bot(command_prefix=';')
 
-enabled = True
+enabled = False
 
 admins = [94951931172098048, 94954503819759616]
 
@@ -47,6 +47,17 @@ async def exit(ctx):
         sys.exit("[SYSTEM] Exiting...")
     else:
         await ctx.author.send("You do not have permission to shut down this bot. Please contact @Darren#0268 for help.")
+
+@cmdtest.command()
+async def toggletroll(ctx):
+    if ctx.author.id in admins:
+        if enabled:
+            enabled = False
+            await ctx.channel.send("disabled!")
+        else:
+            enabled = True
+            await ctx.channel.send("enabled!")
+        await ctx.message.add_reaction("thumbsup")
 
 @cmdtest.command()
 async def leaderboard(ctx, arg: str=None, amt: str=6):
@@ -127,7 +138,10 @@ async def on_message(message):
         return
     if message.author.bot and message.embeds:
         print("[{0} - {1}:{2}] {3} || {4} || {5}".format(datetime.now(), message.author.name, message.author.discriminator, message.embeds[0].title, message.embeds[0].description, message.embeds[0].footer))
-
+        if enabled and message.embeds[0].description.contains("h!trick"):
+            await message.channel.send("h!trick")
+        elif enabled and message.embeds[0].description.contains("h!treat"):
+            await message.channel.send("h!treat")
         return
     if (not message.content.startswith(";")) and (not "bot" in message.channel.name):
         cr.execute(''' SELECT * FROM users where id='{0}' and day=date('now') '''.format(message.author.id))
