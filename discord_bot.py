@@ -126,7 +126,7 @@ async def on_message(message):
     if message.author == cmdtest.user:
         return
     if message.author.bot and message.embeds:
-        print("[{0} - {1}:{2}] {3}".format(datetime.now(), message.author.name, message.author.discriminator, message.embeds[0]))
+        print("[{0} - {1}:{2}] {3} || {4} || {5}".format(datetime.now(), message.author.name, message.author.discriminator, message.embeds[0].title, message.embeds[0].description, message.embeds[0].footer))
 
         return
     if (not message.content.startswith(";")) and (not "bot" in message.channel.name):
